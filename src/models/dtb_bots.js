@@ -17,7 +17,7 @@ class dtb_bots extends Model {
 
 
   static associate(models){
-    this.belongsTo(models.Usuarios,{ foreignKey: 'usuario_id', as:'usuario' })
+    this.belongsTo(models.usuarios,{ foreignKey: 'usuario_id', as:'usuario' })
     this.hasMany(models.dtb_estrategia_crash,{ foreignKey: 'bot_id', as:'estrategiascrash' });
     this.hasMany(models.dtb_estrategia_double,{ foreignKey: 'bot_id', as:'estrategiasdouble' });
     this.hasMany(models.dtb_mensagem_crash,{ foreignKey: 'bot_id', as:'mensagenscrash' });

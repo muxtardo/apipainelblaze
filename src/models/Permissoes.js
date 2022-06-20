@@ -1,7 +1,7 @@
 
 const { Model, DataTypes } = require('sequelize');
 
-class Permissoes extends Model {
+class permissoes extends Model {
   static init(sequelize) {
     super.init({
       nome:DataTypes.STRING,
@@ -14,14 +14,14 @@ class Permissoes extends Model {
 
   static associate(models){
  
-  this.belongsToMany(models.Usuarios, { foreignKey: 'permissao_id', through: 'usuarios_permissoes', as: 'usuarios' });
+  this.belongsToMany(models.usuarios, { foreignKey: 'permissao_id', through: 'usuarios_permissoes', as: 'usuarios' });
 
   }
  
 
 }
 
-module.exports = Permissoes;
+module.exports = permissoes;
 
 
 

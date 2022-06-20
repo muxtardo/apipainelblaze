@@ -1,5 +1,5 @@
 'use strict';
- const Usuario = require('../models/Usuarios');
+ const Usuario = require('../models/usuarios');
  const ValidationContract = require("../validator/fluent-validators");
  const authService = require('../services/auth-services');
  const md5 = require('md5');
@@ -286,7 +286,7 @@ async autenticaradmin(req,res){
                 });
                 return;
          }
-        
+        console.log('antes')
         const user = await Usuario.findOne({
             where:{
                 email:req.body.email,
@@ -295,6 +295,7 @@ async autenticaradmin(req,res){
             include:{association:"permissoes"},
         
         });
+        console.log('depois')
 
           if(!user){
             res.status(200).send({

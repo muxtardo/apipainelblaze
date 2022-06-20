@@ -1,6 +1,6 @@
 'use strict';
  const Permissao = require('../models/Permissoes');
- const Usuario = require('../models/Usuarios');
+ const Usuario = require('../models/usuarios');
  const ValidationContract = require("../validator/fluent-validators");
  const authService = require('../services/auth-services');
  const md5 = require('md5');

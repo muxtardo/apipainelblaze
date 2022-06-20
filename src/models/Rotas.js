@@ -17,7 +17,7 @@ class Rotas extends Model {
 
 
   static associate(models){
-    this.belongsTo(models.Usuarios,{ foreignKey: 'usuario_id', as:'usuario' })
+    this.belongsTo(models.usuarios,{ foreignKey: 'usuario_id', as:'usuario' })
   
     }
  
