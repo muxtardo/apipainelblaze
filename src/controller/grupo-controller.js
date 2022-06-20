@@ -297,6 +297,7 @@ async ligarbot(req,res){
             pm2.start({
                 script    : `${process.env.APP_CAMINHO}`,
                 name      : `${grupo.id}`,
+                args      : `${grupo.id}`,
                 //interpreter:'python3.9'
                 }, function(err, apps) {
                    console.log(err);
