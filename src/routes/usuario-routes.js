@@ -12,7 +12,7 @@ router.post('/authenticate/',controller.autenticar);
 router.post('/autenticaradmin/',controller.autenticaradmin);
 router.get('/show/:id',authService.isAdmin,controller.show);
 router.get('/usuariocompermissao/:id',authService.isAdmin,controller.showPermissao);
-router.get('/',controller.index);
+router.get('/',authService.isAdmin,controller.index);
 router.put('/mudastatus/:id',authService.isAdmin,controller.mudastatus);
 router.post('/updatesenha',authService.authorize,controller.updatesenha);
 

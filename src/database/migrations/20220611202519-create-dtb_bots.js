@@ -33,7 +33,7 @@ module.exports = {
       },
       status: {
         type: Sequelize.STRING(200),
-        defaultValue: "A", //A - ativo // I- inativo
+        defaultValue: "I", //A - ativo // I- inativo
       },
       created_at: {
         type: Sequelize.DATE,

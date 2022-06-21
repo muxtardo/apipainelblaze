@@ -8,7 +8,7 @@ const controller = require('../controller/grupo-controller');
 
 router.get('/',authService.authorize,controller.index);
 router.post('/',authService.authorize,controller.store);
-router.get('/show/:id',authService.authorize,controller.show);
+router.get('/show/:id',authService.isAdmin,controller.show);
 router.put('/update/:id',authService.authorize,controller.update);
 router.put('/mudastatus/:id',authService.authorize,controller.mudastatus);
 

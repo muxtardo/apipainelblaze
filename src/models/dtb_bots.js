@@ -6,7 +6,7 @@ class dtb_bots extends Model {
     super.init({
       usuario_id:DataTypes.INTEGER,
       nome:DataTypes.STRING,
-      tipo_jogo:DataTypes.STRING,
+      tipo_jogo:DataTypes.STRING,//Blaze-Crashd | Blaze-Double
       bot_token:DataTypes.STRING,
       chat_id:DataTypes.STRING,
       status:DataTypes.STRING,

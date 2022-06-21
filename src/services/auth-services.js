@@ -58,7 +58,7 @@ exports.isAdmin = function (req, res, next) {
                 } else {
                     res.status(200).json({
                         auth:true,
-                        message: 'Restrito  e adm'
+                        message: 'Restrito  a Administradores'
                     });
                 }
             }
