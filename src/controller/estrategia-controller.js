@@ -99,16 +99,20 @@ async showdouble(req,res){
               
            })
        }
-
-       const duble = await EstrategiaDouble.findOne({
-        where: {
-            [Op.and]: [
-              { bot_id: idbot},
-              { id:id }
-            ]
-          }
-
-       });
+       var duble = new EstrategiaDouble();
+       if(usuarioLogado.permissoes.length > 0){
+        duble = await EstrategiaDouble.findOne({where:{ id:id }});
+       }else{
+        duble = await EstrategiaDouble.findOne({
+               where: {
+                   [Op.and]: [
+                    { bot_id: idbot},
+                     { id:id }
+                   ]
+                 }
+           });
+       }
+   
 
       
        return res.status(201).send({
@@ -149,16 +153,20 @@ async updatedouble(req,res){
             })
         };
     
-   
-        const doubleOld =await EstrategiaDouble.findOne({
-            where: {
-                [Op.and]: [
-                  { bot_id: idbot},
-                  { id:id }
-                ]
-              }
-    
-           });
+        var doubleOld = new EstrategiaDouble();
+        if(usuarioLogado.permissoes.length > 0){
+            doubleOld = await EstrategiaDouble.findOne({where:{ id:id }});
+        }else{
+            doubleOld = await EstrategiaDouble.findOne({
+                where: {
+                    [Op.and]: [
+                     { bot_id: idbot},
+                      { id:id }
+                    ]
+                  }
+            });
+        }
+ 
 
     if(!doubleOld){
         return res.status(201).json({
@@ -311,6 +319,8 @@ async indexcrahs(req,res){
                
             })
         }
+        
+        
 
         const  crashs = await EstrategiaCrash.findAll({where:{bot_id:id}})
 
@@ -342,17 +352,23 @@ async showcrash(req,res){
            })
        }
 
-       const crash = await EstrategiaCrash.findOne({
-        where: {
-            [Op.and]: [
-              { bot_id: idbot},
-              { id:id }
-            ]
-          }
+       
 
-       });
+       var crash = new EstrategiaCrash();
+       if(usuarioLogado.permissoes.length > 0){
+        crash = await EstrategiaCrash.findOne({where:{ id:id }});
+       }else{
+        crash = await EstrategiaCrash.findOne({
+               where: {
+                   [Op.and]: [
+                    { bot_id: idbot},
+                     { id:id }
+                   ]
+                 }
+           });
+       }
 
-      
+
        return res.status(201).send({
          crash:crash
        })
@@ -393,16 +409,20 @@ async updatecrash(req,res){
             })
         };
     
-   
-        const crashOld =await EstrategiaCrash.findOne({
-            where: {
-                [Op.and]: [
-                  { bot_id: idbot},
-                  { id:id }
-                ]
-              }
-    
-           });
+        var crashOld = new EstrategiaCrash();
+        if(usuarioLogado.permissoes.length > 0){
+            crashOld = await EstrategiaCrash.findOne({where:{ id:id }});
+        }else{
+            crashOld = await EstrategiaCrash.findOne({
+                where: {
+                    [Op.and]: [
+                     { bot_id: idbot},
+                      { id:id }
+                    ]
+                  }
+            });
+        }
+       
 
     if(!crashOld){
         return res.status(201).json({

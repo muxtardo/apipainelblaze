@@ -132,8 +132,8 @@ async store(req,res){
             await EstrategiaDouble.create({
                 bot_id:grupo.id,
                 nome:'Dois em dois vermelho',
-                sequencia:'2,2,1,1,2',
-                apostar_em:'2',
+                sequencia:'1,1,2,2,1',
+                apostar_em:'1',
                 martingale:'2',
             }); 
 
@@ -395,15 +395,19 @@ async ligarbot(req,res){
               
            })
        }
-       const grupo = await Grupo.findOne({
-        where: {
-            [Op.and]: [
-              { usuario_id: usuarioLogado.id },
-              { id:id }
-            ]
-          }
-
-       });
+       var grupo = new Grupo();
+       if(usuarioLogado.permissoes.length > 0){
+        grupo = await Grupo.findOne({where:{ id:id }});
+       }else{
+           grupo = await Grupo.findOne({
+               where: {
+                   [Op.and]: [
+                     { usuario_id: usuarioLogado.id },
+                     { id:id }
+                   ]
+                 }
+           });
+       }
        if(!grupo){
         return res.status(201).json({
             msg:'Grupo não existe',
@@ -479,6 +483,66 @@ async ligarbot(req,res){
     }
 
 },
+
+
+async reinicarbot(req,res){
+    try{
+        
+            const { id } = req.params;
+            const token = req.body.token || req.query.token || req.headers['x-access-token'];
+            const usuarioLogado = await authService.decodeToken(token);
+            console.log('entrou no dsfsd')
+            console.log(id)
+            if(!usuarioLogado){
+                return res.status(201).json({
+                    msg:'Usuario não existe',
+                   
+                })
+            }
+            var grupo = new Grupo();
+            if(usuarioLogado.permissoes.length > 0){
+             grupo = await Grupo.findOne({where:{ id:id }});
+            }else{
+                grupo = await Grupo.findOne({
+                    where: {
+                        [Op.and]: [
+                          { usuario_id: usuarioLogado.id },
+                          { id:id }
+                        ]
+                      }
+                });
+
+            }
+            if(!grupo){
+             return res.status(201).json({
+                 msg:'Grupo não existe',
+             })
+             }
+ 
+        pm2.connect(function(err) {
+            if (err) {
+             console.error(err)
+             process.exit(2)
+            }
+            
+            pm2.restart(`${grupo.id}`, function (err, proc) {
+                //console.log(err,proc);
+                 pm2.disconnect();
+              })
+
+            })
+
+            return res.status(201).send({
+                msg:'Bot reiniciado',
+              })
+      
+
+    }catch(err){
+        return res.status(200).send({
+            error:err.message
+        })
+    }
+}
 
    
 }

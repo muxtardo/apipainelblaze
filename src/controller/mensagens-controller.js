@@ -19,8 +19,13 @@ async index(req,res){
                
             })
         }
-
-        const  grupos = await Grupo.findAll({where:{usuario_id:usuarioLogado.id}})
+        var grupos = new Grupo();
+        if(usuarioLogado.permissoes.length > 0){
+              grupos = await Grupo.findAll();
+        }else{
+            grupos = await Grupo.findAll({where:{usuario_id:usuarioLogado.id}})
+        }
+        
 
         return  res.status(200).send({
             grupos:grupos
@@ -99,15 +104,23 @@ async showdouble(req,res){
            })
        }
 
-       const grupo = await Grupo.findOne({
-        where: {
-            [Op.and]: [
-              { usuario_id: usuarioLogado.id },
-              { id:id }
-            ]
-          }
 
-       });
+
+       var grupo = new Grupo();
+       if(usuarioLogado.permissoes.length > 0){
+         grupo = await Grupo.findOne({where:{ id:id }});
+       }else{
+         grupo = await Grupo.findOne({
+            where: {
+                [Op.and]: [
+                  { usuario_id: usuarioLogado.id },
+                  { id:id }
+                ]
+              }
+    
+           });
+       }
+     
 
        if(!grupo){
         return res.status(201).json({
@@ -147,15 +160,20 @@ async showcrash(req,res){
            })
        }
 
-       const grupo = await Grupo.findOne({
-        where: {
-            [Op.and]: [
-              { usuario_id: usuarioLogado.id },
-              { id:id }
-            ]
-          }
-
-       });
+       var grupo = new Grupo();
+       if(usuarioLogado.permissoes.length > 0){
+         grupo = await Grupo.findOne({where:{ id:id }});
+       }else{
+         grupo = await Grupo.findOne({
+            where: {
+                [Op.and]: [
+                  { usuario_id: usuarioLogado.id },
+                  { id:id }
+                ]
+              }
+    
+           });
+       }
 
        if(!grupo){
         return res.status(201).json({
@@ -219,15 +237,20 @@ async updatedouble(req,res){
         };
     
         
-        const grupo = await Grupo.findOne({
-            where: {
-                [Op.and]: [
-                  { usuario_id: usuarioLogado.id },
-                  { id:id }
-                ]
-              }
-    
-           });
+        var grupo = new Grupo();
+        if(usuarioLogado.permissoes.length > 0){
+          grupo = await Grupo.findOne({where:{ id:id }});
+        }else{
+          grupo = await Grupo.findOne({
+             where: {
+                 [Op.and]: [
+                   { usuario_id: usuarioLogado.id },
+                   { id:id }
+                 ]
+               }
+     
+            });
+        }
 
            if(!grupo){
             return res.status(201).json({
@@ -322,15 +345,20 @@ async updatecrash(req,res){
         };
     
         
-        const grupo = await Grupo.findOne({
-            where: {
-                [Op.and]: [
-                  { usuario_id: usuarioLogado.id },
-                  { id:id }
-                ]
-              }
-    
-           });
+        var grupo = new Grupo();
+        if(usuarioLogado.permissoes.length > 0){
+          grupo = await Grupo.findOne({where:{ id:id }});
+        }else{
+          grupo = await Grupo.findOne({
+             where: {
+                 [Op.and]: [
+                   { usuario_id: usuarioLogado.id },
+                   { id:id }
+                 ]
+               }
+     
+            });
+        }
 
            if(!grupo){
             return res.status(201).json({
