@@ -31,8 +31,13 @@ async index(req,res){
                
             })
         }
-
-        const  grupos = await Grupo.findAll({where:{usuario_id:usuarioLogado.id}})
+           var grupos = new Grupo();
+           if(usuarioLogado.permissoes.length > 0){
+              grupos = await Grupo.findAll()
+           }else{
+            grupos = await Grupo.findAll({where:{usuario_id:usuarioLogado.id}})
+           }
+          
 
         return  res.status(200).send({
             grupos:grupos
@@ -57,12 +62,13 @@ async store(req,res){
                
             })
         }
-        const {nome,tipo_jogo,bot_token,chat_id} = req.body;
+        const {nome,tipo_jogo,bot_token,chat_id,usuario_id} = req.body;
         let contract = new ValidationContract();
         contract.isRequired(nome, 'nome', 'O Nome é obrigatorio');
         contract.isRequired(tipo_jogo, 'tipo_jogo', 'O tipo_jogo é obrigatorio');
         contract.isRequired(bot_token, 'bot_token', 'O bot_token é obrigatorio');
         contract.isRequired(chat_id, 'chat_id', 'O chat_id é obrigatorio');
+        contract.isRequired(usuario_id, 'usuario_id', 'O usuario é obrigatorio');
 
         // Se os dados forem inválidos
         if (!contract.isValid()) {
@@ -72,11 +78,11 @@ async store(req,res){
         };
     
         const grupo = await Grupo.create({
-            usuario_id:usuarioLogado.id,
             nome,
             tipo_jogo,
             bot_token,
             chat_id,
+            usuario_id,
         }); 
        if(grupo.tipo_jogo == "Blaze-Double"){
 
@@ -232,12 +238,7 @@ async show(req,res){
            })
        }
        const grupo = await Grupo.findOne({
-        where: {
-            [Op.and]: [
-              { usuario_id: usuarioLogado.id },
-              { id:id }
-            ]
-          }
+        where:{ id:id }
 
        });
        return res.status(201).send({
@@ -265,12 +266,13 @@ async update(req,res){
             })
         }
     const {id} = req.params;
-    const {nome,tipo_jogo,bot_token,chat_id} = req.body;
+    const {nome,tipo_jogo,bot_token,chat_id,usuario_id} = req.body;
         let contract = new ValidationContract();
         contract.isRequired(nome, 'nome', 'O Nome é obrigatorio');
         contract.isRequired(tipo_jogo, 'tipo_jogo', 'O tipo_jogo é obrigatorio');
         contract.isRequired(bot_token, 'bot_token', 'O bot_token é obrigatorio');
         contract.isRequired(chat_id, 'chat_id', 'O chat_id é obrigatorio');
+        contract.isRequired(usuario_id, 'usuario_id', 'O usuario é obrigatorio');
 
         // Se os dados forem inválidos
         if (!contract.isValid()) {
@@ -281,12 +283,7 @@ async update(req,res){
     
    
         const grupoOld = await Grupo.findOne({
-            where: {
-                [Op.and]: [
-                  { usuario_id: usuarioLogado.id },
-                  { id:id }
-                ]
-              }
+            where:{ id:id }
     
            });
     if(!grupoOld){
@@ -302,6 +299,7 @@ async update(req,res){
         tipo_jogo,
         bot_token,
         chat_id,
+        usuario_id,
         
     }); 
 
