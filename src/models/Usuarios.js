@@ -10,8 +10,6 @@ class usuarios extends Model {
       telefone:DataTypes.STRING,
       status:DataTypes.STRING,
       datavencimento:DataTypes.DATE,
-      win:DataTypes.INTEGER,
-      loss:DataTypes.INTEGER,
     }, {
       sequelize
     });

@@ -10,6 +10,8 @@ class dtb_bots extends Model {
       bot_token:DataTypes.STRING,
       chat_id:DataTypes.STRING,
       status:DataTypes.STRING,
+      win:DataTypes.INTEGER,
+      loss:DataTypes.INTEGER,
     }, {
       sequelize
     });

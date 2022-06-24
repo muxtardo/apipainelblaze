@@ -35,6 +35,14 @@ module.exports = {
         type: Sequelize.STRING(200),
         defaultValue: "I", //A - ativo // I- inativo
       },
+      win: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
+      loss: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
