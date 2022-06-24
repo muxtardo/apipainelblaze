@@ -23,6 +23,14 @@ module.exports = {
       telefone: {
         type: Sequelize.STRING(200),
       },
+      win: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
+      loss: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
   
       status: {
         type: Sequelize.STRING(200),

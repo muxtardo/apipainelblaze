@@ -417,15 +417,15 @@ async ligarbot(req,res){
        
 
      if(grupo.status == "I"){
-
-        pm2.connect(function(err) {
-            if (err) {
+         if(grupo.tipo_jogo == 'Smashup-Double'){
+          pm2.connect(function(err) {
+             if (err) {
               console.error(err)
               process.exit(2)
-            }
+             }
             
             pm2.start({
-                script    : `${(grupo.tipo_jogo == 'Blaze-Crash') ? process.env.APP_CAMINHOCRASH : process.env.APP_CAMINHODOUBLE}`,
+                script    : `${process.env.APP_CAMINHOSMASHDOUBLE}`,
                 name      : `${grupo.id}`,
                 args      : `${grupo.id}`,
                 //interpreter:'python3.9'
@@ -435,6 +435,44 @@ async ligarbot(req,res){
                
              })
              pm2.disconnect();
+         }else if(grupo.tipo_jogo == 'Smashup-Crash'){
+            pm2.connect(function(err) {
+                if (err) {
+                 console.error(err)
+                 process.exit(2)
+                }
+               
+               pm2.start({
+                   script    : `${process.env.APP_CAMINHOSMASHCRASH}`,
+                   name      : `${grupo.id}`,
+                   args      : `${grupo.id}`,
+                   //interpreter:'python3.9'
+                   }, function(err, apps) {
+                      console.log(err);
+                   })
+                  
+                })
+                pm2.disconnect();
+         }else{
+            pm2.connect(function(err) {
+                if (err) {
+                 console.error(err)
+                 process.exit(2)
+                }
+               
+               pm2.start({
+                   script    : `${(grupo.tipo_jogo == 'Blaze-Crash') ? process.env.APP_CAMINHOCRASH : process.env.APP_CAMINHODOUBLE}`,
+                   name      : `${grupo.id}`,
+                   args      : `${grupo.id}`,
+                   //interpreter:'python3.9'
+                   }, function(err, apps) {
+                      console.log(err);
+                   })
+                  
+                })
+                pm2.disconnect();
+         }
+            
 
              const g = await grupo.update({
                 status:"A",
