@@ -84,7 +84,7 @@ async store(req,res){
             chat_id,
             usuario_id,
         }); 
-       if(grupo.tipo_jogo == "Blaze-Double"){
+       if(grupo.tipo_jogo == "Blaze-Double" || "Smashup-Double"){
 
         //Estrategias doubles
              await EstrategiaDouble.create({
