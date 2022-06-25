@@ -485,7 +485,9 @@ async ligarbot(req,res){
              process.exit(2)
             }
             
-            pm2.stop(`${grupo.id}`, function (err, proc) {
+            pm2.stop({
+                name: `${grupo.id}`,
+              }, function (err, proc) {
                 //console.log(err,proc);
                  pm2.disconnect();
               })
