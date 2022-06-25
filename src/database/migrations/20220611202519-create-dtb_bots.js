@@ -37,9 +37,11 @@ module.exports = {
       },
       win: {
         type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       loss: {
         type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       created_at: {
         type: Sequelize.DATE,

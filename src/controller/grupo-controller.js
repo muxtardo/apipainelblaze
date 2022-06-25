@@ -84,7 +84,10 @@ async store(req,res){
             chat_id,
             usuario_id,
         }); 
-       if(grupo.tipo_jogo == "Blaze-Double" || "Smashup-Double"){
+
+
+        console.log(grupo);
+       if(grupo.tipo_jogo == "Blaze-Double" || grupo.tipo_jogo == "Smashup-Double"){
 
         //Estrategias doubles
              await EstrategiaDouble.create({
@@ -300,7 +303,6 @@ async update(req,res){
         bot_token,
         chat_id,
         usuario_id,
-        
     }); 
 
     return res.status(201).json({
@@ -428,7 +430,7 @@ async ligarbot(req,res){
                 script    : `${process.env.APP_CAMINHOSMASHDOUBLE}`,
                 name      : `${grupo.id}`,
                 args      : `${grupo.id}`,
-                //interpreter:'python3.9'
+                interpreter:'python3.8',
                 }, function(err, apps) {
                    console.log(err);
                 })
@@ -446,7 +448,7 @@ async ligarbot(req,res){
                    script    : `${process.env.APP_CAMINHOSMASHCRASH}`,
                    name      : `${grupo.id}`,
                    args      : `${grupo.id}`,
-                   //interpreter:'python3.9'
+                   interpreter:'python3.8',
                    }, function(err, apps) {
                       console.log(err);
                    })
@@ -464,7 +466,7 @@ async ligarbot(req,res){
                    script    : `${(grupo.tipo_jogo == 'Blaze-Crash') ? process.env.APP_CAMINHOCRASH : process.env.APP_CAMINHODOUBLE}`,
                    name      : `${grupo.id}`,
                    args      : `${grupo.id}`,
-                   //interpreter:'python3.9'
+                   interpreter:'python3.8',
                    }, function(err, apps) {
                       console.log(err);
                    })
@@ -473,7 +475,6 @@ async ligarbot(req,res){
                 pm2.disconnect();
          }
             
-
              const g = await grupo.update({
                 status:"A",
               })
