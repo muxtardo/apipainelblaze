@@ -17,4 +17,6 @@ router.put('/mudastatus/:id',authService.authorize,controller.mudastatus);
 router.post('/ligabot/:id',authService.authorize,controller.ligarbot);
 router.post('/reiniciarbot/:id',authService.authorize,controller.reinicarbot);
 
+router.delete('/delete/:id',authService.isAdmin,controller.excluirgrupo);
+
 module.exports =router;

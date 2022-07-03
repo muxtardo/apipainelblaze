@@ -3,6 +3,7 @@
 
  const EstrategiaDouble = require('../models/dtb_estrategia_double');
  const EstrategiaCrash = require('../models/dtb_estrategia_crash');
+ const EstrategiaRoleta = require('../models/dtb_estrategia_bet365');
  const ValidationContract = require("../validator/fluent-validators");
  const authService = require('../services/auth-services');
  const { Op } = require("sequelize");
@@ -511,6 +512,206 @@ catch(err){
 },
 
 
+async indexRoleta(req,res){
+    try{
+        const token = req.body.token || req.query.token || req.headers['x-access-token'];
+        const usuarioLogado = await authService.decodeToken(token);
+        const {id} = req.params;//bot_id
+        console.log(id)
+        if(!usuarioLogado){
+            return res.status(201).json({
+                msg:'Usuario não existe',
+               
+            })
+        }
+        
+        
+
+        const  roletas = await EstrategiaRoleta.findAll({where:{bot_id:id}})
+
+        return  res.status(200).send({
+            roletas
+        });
+
+
+
+
+    }
+    catch(err){
+        res.status(200).send({
+            error:err.message
+        })
+    }
+},
+
+async showroleta(req,res){
+    try{
+       const { id,idbot } = req.params;
+       const token = req.body.token || req.query.token || req.headers['x-access-token'];
+       const usuarioLogado = await authService.decodeToken(token);
+       
+       if(!usuarioLogado){
+           return res.status(201).json({
+               msg:'Usuario não existe',
+              
+           })
+       }
+
+       
+
+       var roleta = new EstrategiaRoleta();
+       if(usuarioLogado.permissoes.length > 0){
+        roleta = await EstrategiaRoleta.findOne({where:{ id:id }});
+       }else{
+        roleta = await EstrategiaRoleta.findOne({
+               where: {
+                   [Op.and]: [
+                    { bot_id: idbot},
+                     { id:id }
+                   ]
+                 }
+        });
+       }
+
+
+       return res.status(201).send({
+        roleta:roleta
+       })
+    }
+    catch(err){
+        return res.status(200).send({
+            error:err.message
+        })
+    }
+
+},
+
+async updateroleta(req,res){
+         
+    try{
+        const token = req.body.token || req.query.token || req.headers['x-access-token'];
+        const usuarioLogado = await authService.decodeToken(token);
+        
+        if(!usuarioLogado){
+            return res.status(201).json({
+                msg:'Usuario não existe',
+               
+            })
+        }
+        const { id,idbot } = req.params;
+         
+      
+        
+        
+        const {
+            nome_roleta,
+            sequencia_cor,  
+            sequencia_maior_menor,
+            sequencia_par_impar,
+            sequencia_duzias,
+            sequencia_colunas,
+            martingale
+        } = req.body;
+        let contract = new ValidationContract();
+        contract.isRequired(nome_roleta, 'nome_roleta', 'O Nome é obrigatorio');
+        contract.isRequired(sequencia_cor, 'sequencia_cor', 'A seguencia de cor é obrigatorio');
+        contract.isRequired(sequencia_maior_menor, 'sequencia_maior_menor', 'A sequencia maior menor a é obrigatorio');
+        contract.isRequired(sequencia_par_impar, 'sequencia_par_impar', 'A sequencia par impar b é obrigatorio');
+        contract.isRequired(sequencia_duzias, 'sequencia_duzias', 'A sequencia duzias é obrigatorio');
+        contract.isRequired(sequencia_colunas, 'sequencia_colunas', 'A sequencia colunas  é obrigatorio');
+        contract.isRequired(martingale, 'martingale', 'O martingale é obrigatorio');
+        // Se os dados forem inválidos
+        if (!contract.isValid()) {
+            return res.status(200).send({
+            error:contract.errors()
+            })
+        };
+    
+        var roletaOld = new EstrategiaRoleta();
+        if(usuarioLogado.permissoes.length > 0){
+            roletaOld = await EstrategiaRoleta.findOne({where:{ id:id }});
+        }else{
+            roletaOld = await EstrategiaRoleta.findOne({
+                where: {
+                    [Op.and]: [
+                     { bot_id: idbot},
+                      { id:id }
+                    ]
+                  }
+            });
+        }
+       
+
+    if(!roletaOld){
+        return res.status(201).json({
+            msg:'Estrategia não existe',
+           
+        })
+    }
+
+   
+    const roleta = await roletaOld.update({
+        nome_roleta,
+        sequencia_cor,  
+        sequencia_maior_menor,
+        sequencia_par_impar,
+        sequencia_duzias,
+        sequencia_colunas,
+        martingale
+        
+    }); 
+
+    return res.status(201).json({
+        msg:"Estrategia Atualizado com sucesso",
+        roleta:roleta
+
+    })
+}
+catch(err){
+    return res.status(200).send({
+        error:err.message
+    })
+}
+
+},
+
+async mudastatusroleta(req,res){
+    try{
+        const {id} = req.params;
+        const roleta = await EstrategiaRoleta.findByPk(id);
+        if(!roleta){
+            return res.status(200).send({
+                msg:'Roleta não existe'
+            });
+        }
+        if(roleta.status == 1){
+            const roletaAtualizado = roleta.update({
+                status:0
+            })
+            return res.status(201).send({
+                msg:"Roleta Inativa",
+                
+            })
+        }
+        else{
+            const roletaAtualizado = roleta.update({
+                status:1
+            })
+            return res.status(201).send({
+                msg:"Roleta Ativo",
+                
+            })
+        }
+       
+
+       
+    }
+    catch(err){
+        return res.status(200).send({
+            error:err.message
+        })
+    }
+},
 
 
 }

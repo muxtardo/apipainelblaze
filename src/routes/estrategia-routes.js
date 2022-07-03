@@ -19,4 +19,10 @@ router.get('/showcrash/:id/:idbot',authService.authorize,controller.showcrash);
 router.put('/updatecrash/:id/:idbot',authService.authorize,controller.updatecrash);
 router.delete('/deletecrash/:id/:idbot',authService.authorize,controller.excluircrash);
 
+
+router.get('/indexroleta/:id',authService.authorize,controller.indexRoleta);
+router.get('/showroleta/:id/:idbot',authService.authorize,controller.showroleta);
+router.put('/updateroleta/:id/:idbot',authService.authorize,controller.updateroleta);
+router.put('/mudastatusroleta/:id',authService.isAdmin,controller.mudastatusroleta);
+
 module.exports =router;

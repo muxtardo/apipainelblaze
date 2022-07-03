@@ -3,6 +3,7 @@ require('dotenv').config();
  const Grupo = require('../models/dtb_bots');
  const EstrategiaDouble = require('../models/dtb_estrategia_double');
  const EstrategiaCrash = require('../models/dtb_estrategia_crash');
+ const EstrategiaRoleta = require('../models/dtb_estrategia_bet365');
 
  const MsgDouble = require('../models/dtb_mensagem_double');
  const MsgCrash = require('../models/dtb_mensagem_crash');
@@ -85,9 +86,8 @@ async store(req,res){
             usuario_id,
         }); 
 
-
-        console.log(grupo);
-       if(grupo.tipo_jogo == "Blaze-Double" || grupo.tipo_jogo == "Smashup-Double"){
+     
+      if(grupo.tipo_jogo == "Blaze-Double" || grupo.tipo_jogo == "Smashup-Double"){
 
         //Estrategias doubles
              await EstrategiaDouble.create({
@@ -169,6 +169,60 @@ async store(req,res){
             
 
     
+      }else if(grupo.tipo_jogo == "Bet365-Roleta"){
+      
+       let rouletes_name=[
+			"Super Spin Roulette",
+			"bet365 Roulette",
+			"bet365 Dutch Roulette",
+			"Who Wants To Be a Millionaire Roulette",
+			"Mega Fire Blaze Roulette Live",
+			"Quantum Roulette Live",
+			"Roulette",
+			"Age Of The Gods Bonus Roulette",
+			"Football Roulette",
+			"Hindi Roulette",
+			"Speed Roulette",
+			"Greek Roulette",
+			"Turkish Roulette",
+			"Roleta Brasileira",
+			"Quantum Auto Roulette",
+			"Speed Auto Roulette",
+			"Prestige Roulette",
+			"American Roulette",
+			"Spread Bet Roulette",
+			"Deutsches Roulette",
+			"Auto Roulette",
+			"Greek Quantum Roulette",
+			"UK Roulette",
+			"Quantum Roulette Italiana",
+			"Triumph Roulette",
+			"Roulette Italiana",
+		]
+
+        rouletes_name.forEach( async (res) =>{
+
+            await EstrategiaRoleta.create({
+                bot_id:grupo.id,
+                nome_roleta:res,
+                sequencia_cor:11,
+                sequencia_maior_menor:11,
+                sequencia_par_impar:11,
+                sequencia_duzias:8,
+                sequencia_colunas:8,
+                martingale:2,
+                status:1,
+            }); 
+
+        })
+
+       
+        
+        
+
+
+
+          
       }else{
        //Estrategia Crash
         await EstrategiaCrash.create({
@@ -501,18 +555,10 @@ async ligarbot(req,res){
 
    
     
-       const grupoNovo = await Grupo.findOne({
-        where: {
-            [Op.and]: [
-              { usuario_id: usuarioLogado.id },
-              { id:id }
-            ]
-          }
+    
 
-       });
-      
        return res.status(201).send({
-         msg:(grupoNovo.status == "I" ?"Grupo Desativado":"Grupo Ativado"),
+         msg:"grupo atualizado",
        })
     }
     catch(err){
@@ -581,7 +627,57 @@ async reinicarbot(req,res){
             error:err.message
         })
     }
+},
+
+
+
+async excluirgrupo(req,res){
+         
+    try{
+        const { id } = req.params;
+        const token = req.body.token || req.query.token || req.headers['x-access-token'];
+        const usuarioLogado = await authService.decodeToken(token);
+        
+        if(!usuarioLogado){
+            return res.status(201).json({
+                msg:'Usuario não existe',
+               
+            })
+        }
+
+        const grupoOld = await Grupo.findOne({
+            where: {id:id}
+    
+           });
+
+     
+          if(!grupoOld){
+            return res.status(201).json({
+                msg:'Grupo não existe',
+               
+            })
+        }
+
+
+
+    const grupo = await Grupo.destroy({where:{id:grupoOld.id}}); 
+
+    return res.status(201).json({
+        resolucao:true,
+        msg:"Grupo Excluida com sucesso",
+        data:grupo
+
+    })
 }
+catch(err){
+    return res.status(200).send({
+        resolucao:false,
+        error:err.message
+    })
+}
+
+},
+
 
    
 }
