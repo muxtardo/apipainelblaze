@@ -2,7 +2,7 @@
 const md5 = require('md5');
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    const senhaNova =  md5('Marcio@2023' + process.env.APP_SECRET_KEY);
+    const senhaNova =  md5('Rodrigo@2022' + process.env.APP_SECRET_KEY);
     return queryInterface.bulkInsert('usuarios', [{
       nome:"Admin",
       senha:senhaNova,
