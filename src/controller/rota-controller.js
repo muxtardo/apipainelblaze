@@ -35,18 +35,18 @@ async index(req,res){
             // });
 
 
-            const msgCrash = await MsgCrash.create({
-                bot_id: jsonformatado[item].bot_id,
-                atencao: jsonformatado[item].atencao,
-                confirmacao: jsonformatado[item].confirmacao,
-                win: jsonformatado[item].win,
-                loss: jsonformatado[item].loss,
-                martingale: jsonformatado[item].martingale,
-                parcial: jsonformatado[item].parcial,
-                final: jsonformatado[item].final,
-                statusmartingale: jsonformatado[item].statusmartingale,
-                statusparcialfinal: jsonformatado[item].statusparcialfinal,
-            }); 
+            // const msgCrash = await MsgCrash.create({
+            //     bot_id: jsonformatado[item].bot_id,
+            //     atencao: jsonformatado[item].atencao,
+            //     confirmacao: jsonformatado[item].confirmacao,
+            //     win: jsonformatado[item].win,
+            //     loss: jsonformatado[item].loss,
+            //     martingale: jsonformatado[item].martingale,
+            //     parcial: jsonformatado[item].parcial,
+            //     final: jsonformatado[item].final,
+            //     statusmartingale: jsonformatado[item].statusmartingale,
+            //     statusparcialfinal: jsonformatado[item].statusparcialfinal,
+            // }); 
 
 
 
