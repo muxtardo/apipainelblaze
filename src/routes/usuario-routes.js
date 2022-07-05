@@ -7,7 +7,7 @@ const controller = require('../controller/usuario-controller');
 
 router.get('/decoude/',authService.authorize,controller.decoude);
 router.post('/',controller.store);
-router.put('/:id',authService.isAdmin,controller.update);
+router.put('/update/:id',authService.isAdmin,controller.update);
 router.post('/authenticate/',controller.autenticar);
 router.post('/autenticaradmin/',controller.autenticaradmin);
 router.get('/show/:id',authService.isAdmin,controller.show);

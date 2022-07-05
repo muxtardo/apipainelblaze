@@ -24,7 +24,7 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false,
      },
-     black: {
+      black: {
           type: Sequelize.TEXT,
           allowNull: false,
       },
@@ -34,6 +34,35 @@ module.exports = {
       loss: {
           type: Sequelize.TEXT,
       },
+      martingale: {
+        type: Sequelize.TEXT,
+      },
+      branco: {
+        type: Sequelize.TEXT,
+      },
+      parcial: {
+        type: Sequelize.TEXT,
+      },
+      final: {
+        type: Sequelize.TEXT,
+      },
+      statusmensagem:{
+        type:Sequelize.INTEGER, // 0- inativo 1-Ativo
+        defaultValue: 0,
+      },
+      statusmartingale:{
+        type:Sequelize.INTEGER, // 0- inativo 1-Ativo
+        defaultValue: 1,
+      },
+      statusparcialfinal:{
+        type:Sequelize.INTEGER, // 0- inativo 1-Ativo
+        defaultValue: 1,
+      },
+      statuscoberturabranco:{
+        type:Sequelize.INTEGER, // 0- inativo 1-Ativo
+        defaultValue: 1,
+      },
+      
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,

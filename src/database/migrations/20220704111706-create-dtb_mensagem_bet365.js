@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('dtb_mensagem_crash', { 
+    await queryInterface.createTable('dtb_mensagem_bet365', { 
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -48,6 +48,10 @@ module.exports = {
         type:Sequelize.INTEGER, // 0- inativo 1-Ativo
         defaultValue: 1,
       },
+      statuscoberturabranco:{
+        type:Sequelize.INTEGER, // 0- inativo 1-Ativo
+        defaultValue: 1,
+      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -65,6 +69,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('dtb_mensagem_crash');
+    await queryInterface.dropTable('dtb_mensagem_bet365');
   }
 };

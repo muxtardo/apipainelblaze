@@ -7,6 +7,7 @@ require('dotenv').config();
 
  const MsgDouble = require('../models/dtb_mensagem_double');
  const MsgCrash = require('../models/dtb_mensagem_crash');
+ const MsgRoleta = require('../models/dtb_mensagem_bet365');
 
  const ValidationContract = require("../validator/fluent-validators");
  const pm2 = require('pm2')
@@ -143,27 +144,22 @@ async store(req,res){
         //Mensagem double
            await MsgDouble.create({
                 bot_id: grupo.id,
-                atencao:'⚠️ ATENÇÃO, possível entrada \
-                ⌚️ Aguarde a confirmação \
-                🎰 Blaze: <a href="https://blaze.com/pt/games/double">Double</a>',
+                atencao:'⚠️ ATENÇÃO, possível entrada \n⌚️ Aguarde a confirmação \n🎰 Blaze: <a href="https://blaze.com/pt/games/double">Double</a>',
                 
-                red:'🔔 Entrada Confirmada 🔔\
-                📍Entrar Após [ULTIMO_NUMERO] [ULTIMA_COR] \
-                🎰  Blaze: <a href="https://blaze.com/pt/games/double">Double</a>\
-                ⚪️ Cobrir o BRANCO\
-                💰 Apostar: 🟥',
+                red:'🔔 Entrada Confirmada 🔔\n📍Entrar Após [ULTIMO_NUMERO] [ULTIMA_COR] \n🎰  Blaze: <a href="https://blaze.com/pt/games/double">Double</a>\n⚪️ Cobrir o BRANCO\n💰 Apostar: 🟥',
 
-                black:'🔔 Entrada Confirmada 🔔 \
-                📍Entrar Após [ULTIMO_NUMERO] [ULTIMA_COR] \
-                🎰 Blaze: <a href="https://blaze.com/pt/games/double">Double</a> \
-                ⚪️ Cobrir o BRANCO \
-                💰 Apostar: ⬛️',
+                black:'🔔 Entrada Confirmada 🔔 \n📍Entrar Após [ULTIMO_NUMERO] [ULTIMA_COR] \n🎰 Blaze: <a href="https://blaze.com/pt/games/double">Double</a> \n\⚪️ Cobrir o BRANCO \n💰 Apostar: ⬛️',
                 
-                win:'✅✅✅GREEN - BATEU META? VAZA \
-                [COR_SEQUENCIA]',
+                win:'✅✅✅GREEN - BATEU META? VAZA \n[COR_SEQUENCIA]  \n✅([ACERTOS]) VS ❌([ERROS]) \nAssertividade: [PORCENTAGEM_ACERTO]',
                 
-                loss:'⛔ RED - SEGUE GERENCIAMENTO \
-                [COR_SEQUENCIA]',
+                loss:'⛔ RED - SEGUE GERENCIAMENTO \n[COR_SEQUENCIA] \n✅([ACERTOS]) VS ❌([ERROS]) \nAssertividade: [PORCENTAGEM_ACERTO]',
+
+                martingale:'🔁 [NUMERO]º Martingale!',
+
+                branco:'🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥\n🤑🤑🤑🤑🤑Green no Branco🤑🤑🤑🤑🤑\n🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥',
+                parcial:'🚀Resultado parcial \n✅([ACERTOS]) VS ❌([ERROS]) \nAssertividade: [PORCENTAGEM_ACERTO]',
+                final:'🚀Resultado Final \n✅([ACERTOS]) VS ❌([ERROS]) \nAssertividade: [PORCENTAGEM_ACERTO]',
+               
            }); 
 
             
@@ -216,12 +212,25 @@ async store(req,res){
 
         })
 
-       
+        const msgRoleta = await MsgRoleta.create({
+            bot_id: grupo.id,
+            atencao:"⚠️ ANALISANDO A MESA ⚠️\n🎰 Roleta: [NOME_ROLETA]\n🎲 Estratégia: [REPETICAO]",
+
+            confirmacao:"🔔 APOSTA CONFIRMADA 🔔\n🎰 Roleta: [NOME_ROLETA]\n📍Entrar: [ENTRAR_EM]\n0️⃣ Cobrir o ZERO.",
+
+            win:"✅✅✅ GREEN ✅✅✅\n[RESULTADO]",
+            
+            loss:"❌❌RED❌❌\n[RED]",
+            
+            martingale:'🔁 [NUMERO]º Martingale!',
+
+            parcial:"🚀Resultado Parcial:✅([ACERTOS]) VS ❌([ERROS])\nAssertividade: [PORCENTAGEM_ACERTO]",
+           
+            final:"🚀Resultado Final:✅([ACERTOS]) VS ❌([ERROS])\nAssertividade: [PORCENTAGEM_ACERTO]",
+          
+        }); 
         
         
-
-
-
           
       }else{
        //Estrategia Crash
@@ -247,22 +256,19 @@ async store(req,res){
         //Mensagem Crash
         const msgCrash = await MsgCrash.create({
             bot_id:grupo.id,
-            atencao:'⚠️ ATENÇÃO, possível entrada [ENTRADA] \
-            ⌚️ Aguarde a confirmação \
-            🎰 Blaze: <a href="https://blaze.com/pt/games/crash">Crash</a>',
+            atencao:'⚠️ ATENÇÃO, possível entrada [ENTRADA] \n⌚️ Aguarde a confirmação \n🎰 Blaze: <a href="https://blaze.com/pt/games/crash">Crash</a>',
 
-            confirmacao:'🔔 Entrada Confirmada 🔔 \
-            🎰 Blaze: <a href="https://blaze.com/pt/games/crash">Crash</a> \
-            💰 Entrar após [ULTIMA_VELA] \
-            🚀 Auto retirar [ENTRADA]',
+            confirmacao:'🔔 Entrada Confirmada 🔔 \n🎰 Blaze: <a href="https://blaze.com/pt/games/crash">Crash</a> \💰 Entrar após [ULTIMA_VELA] \n🚀 Auto retirar [ENTRADA]',
 
-            win:'✅✅✅GREEN - BATEU META? VAZA \
-            [NUMEROS_SEQUENCIA]',
+            win:'✅✅✅GREEN - BATEU META? VAZA \n[NUMEROS_SEQUENCIA]',
 
-            loss:'⛔ RED - SEGUE GERENCIAMENTO \
-            [NUMEROS_SEQUENCIA]',
+            loss:'⛔ RED - SEGUE GERENCIAMENTO \n[NUMEROS_SEQUENCIA]',
+
+            martingale:'🔁 [NUMERO]º Martingale!',
+
+            parcial:'🚀Resultado parcial\n✅([ACERTOS]) VS ❌([ERROS])\nAssertividade: [PORCENTAGEM_ACERTO]',
+            final:'🚀Resultado Final\n✅([ACERTOS]) VS ❌([ERROS])\nAssertividade: [PORCENTAGEM_ACERTO]'
         }); 
-
       }
 
 

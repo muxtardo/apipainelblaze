@@ -25,7 +25,8 @@ class dtb_bots extends Model {
     this.hasMany(models.dtb_mensagem_crash,{ foreignKey: 'bot_id', as:'mensagenscrash' });
     this.hasMany(models.dtb_mensagem_double,{ foreignKey: 'bot_id', as:'mensagensdouble' });
     this.hasMany(models.dtb_estrategia_bet365,{ foreignKey: 'bot_id', as:'estrategiasbet' });
-    }
+    this.hasMany(models.dtb_mensagem_bet365,{ foreignKey: 'bot_id', as:'mensagensroleta' }); 
+  }
  
 
 }

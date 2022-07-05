@@ -3,6 +3,7 @@
  const Grupo = require('../models/dtb_bots');
  const MsgDouble = require('../models/dtb_mensagem_double');
  const MsgCrash = require('../models/dtb_mensagem_crash');
+ const MsgRoleta = require('../models/dtb_mensagem_bet365');
  const ValidationContract = require("../validator/fluent-validators");
  const authService = require('../services/auth-services');
  const { Op } = require("sequelize");
@@ -200,6 +201,61 @@ async showcrash(req,res){
 
 },
 
+
+async showroleta(req,res){
+    try{
+       const { id } = req.params;
+       const token = req.body.token || req.query.token || req.headers['x-access-token'];
+       const usuarioLogado = await authService.decodeToken(token);
+       
+       if(!usuarioLogado){
+           return res.status(201).json({
+               msg:'Usuario não existe',
+              
+           })
+       }
+
+       var grupo = new Grupo();
+       if(usuarioLogado.permissoes.length > 0){
+         grupo = await Grupo.findOne({where:{ id:id }});
+       }else{
+         grupo = await Grupo.findOne({
+            where: {
+                [Op.and]: [
+                  { usuario_id: usuarioLogado.id },
+                  { id:id }
+                ]
+              }
+    
+           });
+       }
+
+       if(!grupo){
+        return res.status(201).json({
+            msg:'Grupo não existe',
+           
+        })
+    }
+
+
+    const msgroleta = await MsgRoleta.findOne({
+        where: {bot_id:id},
+        order: [ [ 'id', 'DESC' ]],
+        });
+       
+       return res.status(201).send({
+        mensagemroleta:msgroleta
+       })
+    }
+    catch(err){
+        return res.status(200).send({
+            error:err.message
+        })
+    }
+
+},
+
+
 async updatedouble(req,res){
          
     try{
@@ -216,18 +272,30 @@ async updatedouble(req,res){
         }
       
 
-     
-
-
  
   
-    const {atencao,red,black,win,loss} = req.body;
+    const {
+        atencao,
+        red,
+        black,
+        win,
+        loss,
+        martingale,
+        branco,
+        parcial,
+        final,
+        statusmensagem,
+        statusmartingale,
+        statusparcialfinal,
+        statuscoberturabranco,
+    } = req.body;
         let contract = new ValidationContract();
         contract.isRequired(atencao, 'atencao', 'A atencao é obrigatorio');
         contract.isRequired(red, 'red', 'O red é obrigatorio');
         contract.isRequired(black, 'black', 'O black é obrigatorio');
         contract.isRequired(win, 'win', 'O win é obrigatorio');
         contract.isRequired(loss, 'loss', 'O loss é obrigatorio');
+        contract.isRequired(martingale, 'martingale', 'O martingale é obrigatorio');
 
         // Se os dados forem inválidos
         if (!contract.isValid()) {
@@ -273,6 +341,15 @@ async updatedouble(req,res){
             black,
             win,
             loss,
+            martingale,
+            branco,
+            parcial,
+            final,
+            statusmensagem,
+            statusmartingale,
+            statusparcialfinal,
+            statuscoberturabranco
+
         }); 
 
         return res.status(201).json({
@@ -291,6 +368,14 @@ async updatedouble(req,res){
             black,
             win,
             loss,
+            martingale,
+            branco,
+            parcial,
+            final,
+            statusmensagem,
+            statusmartingale,
+            statusparcialfinal,
+            statuscoberturabranco
         
     }); 
 
@@ -330,7 +415,17 @@ async updatecrash(req,res){
 
  
   
-    const {atencao,confirmacao,win,loss} = req.body;
+    const {
+        atencao,
+        confirmacao,
+        win,
+        loss,
+        martingale,
+        parcial,
+        final,
+        statusmartingale,
+        statusparcialfinal,
+    } = req.body;
         let contract = new ValidationContract();
         contract.isRequired(atencao, 'atencao', 'A atencao é obrigatorio');
         contract.isRequired(confirmacao, 'confirmacao', 'O confirmacao é obrigatorio');
@@ -380,6 +475,11 @@ async updatecrash(req,res){
             confirmacao,
             win,
             loss,
+            martingale,
+            parcial,
+            final,
+            statusmartingale,
+            statusparcialfinal,
         }); 
       
         return res.status(201).json({
@@ -397,12 +497,128 @@ async updatecrash(req,res){
         confirmacao,
         win,
         loss,
+        martingale,
+        parcial,
+        final,
+        statusmartingale,
+        statusparcialfinal,
         
     }); 
 
     return res.status(201).json({
         msg:"Mensagem Atualizado com sucesso",
         data:msgCrash
+
+    })
+}
+catch(err){
+    return res.status(200).send({
+        error:err.message
+    })
+}
+
+},
+
+async updateroleta(req,res){
+         
+    try{
+        //id do bottt
+        const {id} = req.params;
+        const token = req.body.token || req.query.token || req.headers['x-access-token'];
+        const usuarioLogado = await authService.decodeToken(token);
+        
+        if(!usuarioLogado){
+            return res.status(201).json({
+                msg:'Usuario não existe',
+               
+            })
+        }
+      
+  
+    const {atencao,confirmacao,win,loss,martingale,parcial,final,statusmartingale,statusparcialfinal,statuscoberturabranco} = req.body;
+        let contract = new ValidationContract();
+        contract.isRequired(atencao, 'atencao', 'A atencao é obrigatorio');
+        contract.isRequired(confirmacao, 'confirmacao', 'O confirmacao é obrigatorio');
+        contract.isRequired(win, 'win', 'O win é obrigatorio');
+        contract.isRequired(loss, 'loss', 'O loss é obrigatorio');
+
+        // Se os dados forem inválidos
+        if (!contract.isValid()) {
+            return res.status(200).send({
+            error:contract.errors()
+            })
+        };
+    
+        
+        var grupo = new Grupo();
+        if(usuarioLogado.permissoes.length > 0){
+          grupo = await Grupo.findOne({where:{ id:id }});
+        }else{
+          grupo = await Grupo.findOne({
+             where: {
+                 [Op.and]: [
+                   { usuario_id: usuarioLogado.id },
+                   { id:id }
+                 ]
+               }
+     
+            });
+        }
+
+           if(!grupo){
+            return res.status(201).json({
+                msg:'Grupo não existe',
+               
+            })
+        }
+
+
+        const msgOld = await MsgRoleta.findOne({
+            where: {bot_id:id},
+            order: [ [ 'id', 'DESC' ]],
+            });
+ 
+    if(!msgOld){
+        const msgRoleta = await MsgRoleta.create({
+            bot_id: id,
+            atencao,
+            confirmacao,
+            win,
+            loss,
+            martingale,
+            parcial,
+            final,
+            statusmartingale,
+            statusparcialfinal,
+            statuscoberturabranco,
+        }); 
+      
+        return res.status(201).json({
+            resolucao:true,
+            msg:"Mensagem Cadastrado com sucesso",
+            data:msgRoleta
+
+        })
+     
+    }
+
+   
+    const msgRoleta = await msgOld.update({
+        atencao,
+        confirmacao,
+        win,
+        loss,
+        martingale,
+        parcial,
+        final,
+        statusmartingale,
+        statusparcialfinal,
+        statuscoberturabranco,
+    }); 
+
+    return res.status(201).json({
+        msg:"Mensagem Atualizado com sucesso",
+        data:msgRoleta
 
     })
 }

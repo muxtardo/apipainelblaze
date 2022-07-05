@@ -89,6 +89,14 @@ ValidationContract.prototype.isRequired = (value,name, message) => {
     errors[name] = [message];
 }
 
+ValidationContract.prototype.isInteger = (value,name, message) => {
+ 
+   
+    if (!Number.isInteger(value))
+    errors[name] = [message];
+   
+}
+
 ValidationContract.prototype.hasMinLen = (value, min,name, message,) => {
     if (!value || value.length < min)
     errors[name] = {[name]:[message]};

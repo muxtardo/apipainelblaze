@@ -9,6 +9,7 @@ class dtb_estrategia_double extends Model {
       sequencia:DataTypes.STRING,
       apostar_em:DataTypes.FLOAT,
       martingale:DataTypes.INTEGER,
+    
     }, {
       sequelize
     });
@@ -24,6 +25,3 @@ class dtb_estrategia_double extends Model {
 }
 
 module.exports = dtb_estrategia_double;
-
-
-

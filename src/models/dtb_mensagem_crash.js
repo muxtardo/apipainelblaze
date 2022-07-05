@@ -9,6 +9,11 @@ class dtb_mensagem_crash extends Model {
       confirmacao:DataTypes.TEXT,
       win:DataTypes.TEXT,
       loss:DataTypes.TEXT,
+      martingale:DataTypes.TEXT,
+      parcial:DataTypes.TEXT,
+      final:DataTypes.TEXT,
+      statusmartingale:DataTypes.INTEGER,
+      statusparcialfinal:DataTypes.INTEGER,
     }, {
       sequelize
     });

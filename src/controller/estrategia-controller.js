@@ -146,7 +146,7 @@ async updatedouble(req,res){
         contract.isRequired(nome, 'nome', 'O Nome é obrigatorio');
         contract.isRequired(sequencia, 'sequencia', 'A seguencia é obrigatorio');
         contract.isRequired(apostar_em, 'apostar_em', 'O apostar_em é obrigatorio');
-        contract.isRequired(martingale, 'martingale', 'O martingale é obrigatorio');
+        contract.isInteger(parseInt(martingale), 'martingale', 'O martingale é obrigatorio');
         // Se os dados forem inválidos
         if (!contract.isValid()) {
             return res.status(200).send({
@@ -402,7 +402,7 @@ async updatecrash(req,res){
         contract.isRequired(valor_a, 'valor_a', 'A valor a é obrigatorio');
         contract.isRequired(valor_b, 'valor_b', 'A valor b é obrigatorio');
         contract.isRequired(apostar_em, 'apostar_em', 'O apostar_em é obrigatorio');
-        contract.isRequired(martingale, 'martingale', 'O martingale é obrigatorio');
+        contract.isInteger(parseInt(martingale), 'martingale', 'O martingale é obrigatorio');
         // Se os dados forem inválidos
         if (!contract.isValid()) {
             return res.status(200).send({
@@ -619,7 +619,7 @@ async updateroleta(req,res){
         contract.isRequired(sequencia_par_impar, 'sequencia_par_impar', 'A sequencia par impar b é obrigatorio');
         contract.isRequired(sequencia_duzias, 'sequencia_duzias', 'A sequencia duzias é obrigatorio');
         contract.isRequired(sequencia_colunas, 'sequencia_colunas', 'A sequencia colunas  é obrigatorio');
-        contract.isRequired(martingale, 'martingale', 'O martingale é obrigatorio');
+        contract.isInteger(parseInt(martingale), 'martingale', 'O martingale é obrigatorio');
         // Se os dados forem inválidos
         if (!contract.isValid()) {
             return res.status(200).send({

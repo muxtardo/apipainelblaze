@@ -11,6 +11,7 @@ class dtb_estrategia_crash extends Model {
       valor_b:DataTypes.FLOAT,
       apostar_em:DataTypes.FLOAT,
       martingale:DataTypes.INTEGER,
+
     }, {
       sequelize
     });
@@ -26,6 +27,5 @@ class dtb_estrategia_crash extends Model {
 }
 
 module.exports = dtb_estrategia_crash;
-
 
 
