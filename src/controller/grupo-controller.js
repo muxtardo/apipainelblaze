@@ -179,7 +179,7 @@ async store(req,res){
 			"Football Roulette",
 			"Hindi Roulette",
 			"Speed Roulette",
-			"Greek Roulette",
+			"Greek  Roulette",
 			"Turkish Roulette",
 			"Roleta Brasileira",
 			"Quantum Auto Roulette",
@@ -474,7 +474,7 @@ async ligarbot(req,res){
         return res.status(201).json({
             msg:'Grupo não existe',
         })
-        }
+       }
 
        
 
