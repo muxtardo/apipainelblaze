@@ -23,6 +23,6 @@ router.delete('/deletecrash/:id/:idbot',authService.authorize,controller.excluir
 router.get('/indexroleta/:id',authService.authorize,controller.indexRoleta);
 router.get('/showroleta/:id/:idbot',authService.authorize,controller.showroleta);
 router.put('/updateroleta/:id/:idbot',authService.authorize,controller.updateroleta);
-router.put('/mudastatusroleta/:id',authService.isAdmin,controller.mudastatusroleta);
+router.put('/mudastatusroleta/:id',authService.authorize,controller.mudastatusroleta);
 
 module.exports =router;
