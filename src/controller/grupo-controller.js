@@ -488,7 +488,7 @@ async ligarbot(req,res){
             
             pm2.start({
                 script    : `${process.env.APP_CAMINHOSMASHDOUBLE}`,
-                name      : `${grupo.id}`,
+                name      : `${grupo.nome + grupo.id}`,
                 args      : `${grupo.id}`,
                 interpreter:'python3.8',
                 }, function(err, apps) {
@@ -506,7 +506,7 @@ async ligarbot(req,res){
                
                pm2.start({
                    script    : `${process.env.APP_CAMINHOSMASHCRASH}`,
-                   name      : `${grupo.id}`,
+                   name      : `${grupo.nome + grupo.id}`,
                    args      : `${grupo.id}`,
                    interpreter:'python3.8',
                    }, function(err, apps) {
@@ -525,7 +525,7 @@ async ligarbot(req,res){
                
                pm2.start({
                    script    : `${process.env.APP_CAMINHOROLETA}`,
-                   name      : `${grupo.id}`,
+                   name      : `${grupo.nome + grupo.id}`,
                    args      : `${grupo.id}`,
                    interpreter:'python3.8',
                    }, function(err, apps) {
@@ -543,7 +543,7 @@ async ligarbot(req,res){
                
                pm2.start({
                    script    : `${(grupo.tipo_jogo == 'Blaze-Crash') ? process.env.APP_CAMINHOCRASH : process.env.APP_CAMINHODOUBLE}`,
-                   name      : `${grupo.id}`,
+                   name      : `${grupo.nome + grupo.id}`,
                    args      : `${grupo.id}`,
                    interpreter:'python3.8',
                    }, function(err, apps) {
@@ -565,7 +565,7 @@ async ligarbot(req,res){
              process.exit(2)
             }
             
-            pm2.stop(`${grupo.id}`, function (err, proc) {
+            pm2.stop(`${grupo.nome + grupo.id}`, function (err, proc) {
                 //console.log(err,proc);
                  pm2.disconnect();
               })
@@ -635,7 +635,7 @@ async reinicarbot(req,res){
              process.exit(2)
             }
             
-            pm2.restart(`${grupo.id}`, function (err, proc) {
+            pm2.restart(`${grupo.nome + grupo.id}`, function (err, proc) {
                 //console.log(err,proc);
                  pm2.disconnect();
               })
