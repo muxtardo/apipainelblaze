@@ -119,7 +119,7 @@ async update(req,res){
       
         const usuarioExist  = await Usuario.findOne({where:{email:email}});
         const usuarioExist2  = await Usuario.findOne({where:{id:id}});
-        contract.isRequired(nome, 'nome', 'O Cep é obrigatorio');
+        contract.isRequired(nome, 'nome', 'O nome é obrigatorio');
         contract.isRequired(email, 'email', 'O email é obrigatorio');
         contract.isEmailUpdade(usuarioExist,usuarioExist2, 'email', 'O email  já existe');
         // Se os dados forem inválidos
