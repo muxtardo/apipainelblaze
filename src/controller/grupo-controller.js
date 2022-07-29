@@ -534,7 +534,26 @@ async ligarbot(req,res){
                   
                 })
                 pm2.disconnect();
-         }else{
+         }else if(grupo.tipo_jogo == 'Betfiery-Crash'){
+            pm2.connect(function(err) {
+                if (err) {
+                 console.error(err)
+                 process.exit(2)
+                }
+               
+               pm2.start({
+                   script    : `${process.env.APP_BetfieryCrash}`,
+                   name      : `${grupo.nome + grupo.id}`,
+                   args      : `${grupo.id}`,
+                   interpreter:'python3.8',
+                   }, function(err, apps) {
+                      console.log(err);
+                   })
+                  
+                })
+                pm2.disconnect(); 
+         }
+         else{
             pm2.connect(function(err) {
                 if (err) {
                  console.error(err)
@@ -554,9 +573,9 @@ async ligarbot(req,res){
                 pm2.disconnect();
          }
             
-             const g = await grupo.update({
-                status:"A",
-              })
+        const g = await grupo.update({
+            status:"A",
+        })
      }else{
 
         pm2.connect(function(err) {
