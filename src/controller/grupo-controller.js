@@ -550,9 +550,86 @@ async ligarbot(req,res){
                       console.log(err);
                    })
                   
-                })
-                pm2.disconnect(); 
+            })
+            pm2.disconnect(); 
          }
+         else if(grupo.tipo_jogo == 'Stake-Crash'){
+            pm2.connect(function(err) {
+                if (err) {
+                 console.error(err)
+                 process.exit(2)
+                }
+               
+               pm2.start({
+                   script    : `${process.env.APP_STAKE}`,
+                   name      : `${grupo.nome + grupo.id}`,
+                   args      : `${grupo.id}`,
+                   interpreter:'python3.8',
+                   }, function(err, apps) {
+                      console.log(err);
+                   })
+                  
+            })
+            pm2.disconnect(); 
+         }
+         else if(grupo.tipo_jogo == 'Betfury-Crash'){
+            pm2.connect(function(err) {
+                if (err) {
+                 console.error(err)
+                 process.exit(2)
+                }
+               
+               pm2.start({
+                   script    : `${process.env.APP_BETFURY}`,
+                   name      : `${grupo.nome + grupo.id}`,
+                   args      : `${grupo.id}`,
+                   interpreter:'python3.8',
+                   }, function(err, apps) {
+                      console.log(err);
+                   })
+                  
+            })
+            pm2.disconnect(); 
+         }
+         else if(grupo.tipo_jogo == 'Betano-Crash'){
+            pm2.connect(function(err) {
+                if (err) {
+                 console.error(err)
+                 process.exit(2)
+                }
+               
+               pm2.start({
+                   script    : `${process.env.APP_BETANO}`,
+                   name      : `${grupo.nome + grupo.id}`,
+                   args      : `${grupo.id}`,
+                   interpreter:'python3.8',
+                   }, function(err, apps) {
+                      console.log(err);
+                   })
+                  
+            })
+            pm2.disconnect(); 
+         }
+         else if(grupo.tipo_jogo == 'Bcgame-Crash'){
+            pm2.connect(function(err) {
+                if (err) {
+                 console.error(err)
+                 process.exit(2)
+                }
+               
+               pm2.start({
+                   script    : `${process.env.APP_BCGAME}`,
+                   name      : `${grupo.nome + grupo.id}`,
+                   args      : `${grupo.id}`,
+                   interpreter:'python3.8',
+                   }, function(err, apps) {
+                      console.log(err);
+                   })
+                  
+            })
+            pm2.disconnect(); 
+         }
+
          else{
             pm2.connect(function(err) {
                 if (err) {
