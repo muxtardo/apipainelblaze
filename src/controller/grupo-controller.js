@@ -88,7 +88,7 @@ async store(req,res){
         }); 
 
      
-      if(grupo.tipo_jogo == "Blaze-Double" || grupo.tipo_jogo == "Smashup-Double"){
+      if(grupo.tipo_jogo == "Blaze-Double" || grupo.tipo_jogo == "Smashup-Double" || grupo.tipo_jogo == "Brabet-Double"){
 
         //Estrategias doubles
              await EstrategiaDouble.create({
