@@ -497,7 +497,46 @@ async ligarbot(req,res){
                
              })
              pm2.disconnect();
-         }else if(grupo.tipo_jogo == 'Smashup-Crash'){
+         }
+         if(grupo.tipo_jogo == 'Brabet-Double'){
+            pm2.connect(function(err) {
+               if (err) {
+                console.error(err)
+                process.exit(2)
+               }
+              
+              pm2.start({
+                  script    : `${process.env.APP_BRABETDOUBLE}`,
+                  name      : `${grupo.nome + grupo.id}`,
+                  args      : `${grupo.id}`,
+                  interpreter:'python3.8',
+                  }, function(err, apps) {
+                     console.log(err);
+                  })
+                 
+               })
+               pm2.disconnect();
+         }
+         else if(grupo.tipo_jogo == 'Brabet-Crash'){
+            pm2.connect(function(err) {
+                if (err) {
+                 console.error(err)
+                 process.exit(2)
+                }
+               
+               pm2.start({
+                   script    : `${process.env.APP_BRABETCRASH}`,
+                   name      : `${grupo.nome + grupo.id}`,
+                   args      : `${grupo.id}`,
+                   interpreter:'python3.8',
+                   }, function(err, apps) {
+                      console.log(err);
+                   })
+                  
+                })
+                pm2.disconnect();
+         }
+         else if(grupo.tipo_jogo == 'Smashup-Crash'){
             pm2.connect(function(err) {
                 if (err) {
                  console.error(err)
@@ -534,7 +573,8 @@ async ligarbot(req,res){
                   
                 })
                 pm2.disconnect();
-         }else if(grupo.tipo_jogo == 'Betfiery-Crash'){
+         }
+         else if(grupo.tipo_jogo == 'Betfiery-Crash'){
             pm2.connect(function(err) {
                 if (err) {
                  console.error(err)
