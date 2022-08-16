@@ -379,6 +379,49 @@ catch(err){
 
 },
 
+async zerawinloss(req,res){
+         
+    try{
+        const token = req.body.token || req.query.token || req.headers['x-access-token'];
+        const usuarioLogado = await authService.decodeToken(token);
+        
+        if(!usuarioLogado){
+            return res.status(201).json({
+                msg:'Usuario não existe',
+               
+            })
+        }
+        const {id} = req.params;
+        
+        const grupoOld = await Grupo.findOne({
+                where:{ id:id }
+        
+            });
+        if(!grupoOld){
+            return res.status(201).json({
+                msg:'Grupo não existe',
+            
+            })
+        }
+
+   
+    const grupo = await grupoOld.update({
+       win:0,
+       loss:0
+    }); 
+
+    return res.status(201).json({
+        msg:"Grupo Atualizado com sucesso",
+        data:grupo
+
+    })
+}
+catch(err){
+    return res.status(200).send({
+        error:err.message
+    })
+}
+},
 
 async mudastatus(req,res){
     try{
