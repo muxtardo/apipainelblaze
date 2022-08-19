@@ -160,6 +160,66 @@ async update(req,res){
 
 },
 
+async updatesenha(req,res){
+         
+    try{
+            
+        const token = req.body.token || req.query.token || req.headers['x-access-token'];
+         const usuarioLogado = await authService.decodeToken(token);
+         
+         if(!usuarioLogado){
+             return res.status(201).json({
+                 msg:'Usuario não existe',
+                
+             })
+         }
+
+  
+        const {senha} = req.body;
+   
+   
+    let contract = new ValidationContract();
+
+
+  
+    contract.isRequired(senha, 'senha', 'A Senha é obrigatorio');
+  
+    // Se os dados forem inválidos
+    if (!contract.isValid()) {
+        return res.status(200).send({
+        error:contract.errors()
+        })
+    };
+   
+    const usuarioold = await Usuario.findByPk(usuarioLogado.id);
+    if(!usuarioold){
+        return res.status(201).json({
+            msg:'Usuario não existe',
+           
+        })
+    }
+    const senhaNova =  md5(senha + process.env.APP_SECRET_KEY);
+   
+    const usuario = await usuarioold.update({
+        senha:senhaNova,
+      
+    }); 
+
+    return res.status(201).json({
+        msg:"Senha Atualizado com sucesso",
+        data:usuario
+
+    })
+}
+catch(err){
+    return res.status(200).send({
+        error:err.message
+    })
+}
+
+},
+
+
 async index(req,res){
     try{
         const usuarios = await Usuario.findAll();
