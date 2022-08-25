@@ -55,7 +55,7 @@ async storedouble(req,res){
         contract.isRequired(nome, 'nome', 'O Nome é obrigatorio');
         contract.isRequired(sequencia, 'sequencia', 'A seguencia é obrigatorio');
         contract.isRequired(apostar_em, 'apostar_em', 'O apostar_em é obrigatorio');
-        contract.isRequired(martingale, 'martingale', 'O martingale é obrigatorio');
+        contract.isInteger(parseInt(martingale), 'martingale', 'O martingale é obrigatorio');
 
         // Se os dados forem inválidos
         if (!contract.isValid()) {
